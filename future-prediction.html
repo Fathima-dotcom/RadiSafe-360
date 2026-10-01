@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radisafe 360 | Future Prediction</title>
+    <link rel="stylesheet" href="future-prediction.css">
+</head>
+<body>
+
+    <nav class="prediction-nav">
+        <div class="prediction-logo">Radi<span>safe 360</span></div>
+    </nav>
+
+    <main class="prediction-page">
+        <section class="prediction-hero">
+            <div class="prediction-badge">🔮 FUTURE RADIATION ANALYSIS</div>
+            <h1>Future Prediction <span>Scale</span></h1>
+            <p>
+                View a prototype projection of the radiation index for the selected state
+                across upcoming time periods.
+            </p>
+        </section>
+
+        <section class="prediction-card">
+            <div class="state-heading">
+                <div>
+                    <small>SELECTED REGION</small>
+                    <h2 id="predictionState">Loading...</h2>
+                </div>
+                <div class="current-index">
+                    <small>Current Index</small>
+                    <strong id="currentIndex">--</strong>
+                </div>
+            </div>
+
+            <div class="prediction-scale-wrap">
+                <div class="scale-title-row">
+                    <h3>Prediction Scale</h3>
+                    <span id="predictionLevel">--</span>
+                </div>
+
+                <div class="prediction-scale" aria-label="Radiation prediction scale">
+                    <div class="scale-segment very-low">Very Low<br><b>0–20</b></div>
+                    <div class="scale-segment low">Low<br><b>21–40</b></div>
+                    <div class="scale-segment moderate">Moderate<br><b>41–60</b></div>
+                    <div class="scale-segment high">High<br><b>61–80</b></div>
+                    <div class="scale-segment very-high">Very High<br><b>81–100</b></div>
+                </div>
+            </div>
+
+            <div class="forecast-grid">
+                <article class="forecast-card">
+                    <span>24 HOURS</span>
+                    <strong id="day1Value">--</strong>
+                    <p id="day1Level">--</p>
+                </article>
+                <article class="forecast-card">
+                    <span>3 DAYS</span>
+                    <strong id="day3Value">--</strong>
+                    <p id="day3Level">--</p>
+                </article>
+                <article class="forecast-card">
+                    <span>7 DAYS</span>
+                    <strong id="day7Value">--</strong>
+                    <p id="day7Level">--</p>
+                </article>
+            </div>
+
+            <div class="forecast-note">
+                <strong>⚠️ Prototype notice</strong>
+                <p>
+                    This prediction page is a demonstration of the future-analysis interface.
+                    The displayed projections are not live radiation forecasts. For real predictive
+                    results, connect the page to verified historical and current radiation datasets
+                    and a validated forecasting model.
+                </p>
+            </div>
+        </section>
+
+        <section class="how-it-works">
+            <h2>How the future scale works</h2>
+            <div class="steps">
+                <div><b>01</b><span>Use the selected state's current index.</span></div>
+                <div><b>02</b><span>Project the index across future time periods.</span></div>
+                <div><b>03</b><span>Map the projected index to the five-level scale.</span></div>
+            </div>
+        </section>
+
+        <div class="prediction-home-area">
+            <button class="prediction-home-button" 
+            onclick="goBackHome()">
+                ← Go Back Home
+            </button>
+        </div>
+    </main>
+
+    <footer>
+        <h3>☢️ Radisafe 360</h3>
+        <p>Radiation Awareness & Safety Platform</p>
+    </footer>
+
+    <script src="future-prediction.js"></script>
+</body>
+</html>

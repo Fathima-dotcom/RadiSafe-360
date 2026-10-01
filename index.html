@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Radisafe 360 | Radiation Analysis</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Leaflet Map CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Radi<span>safe 360</span>
+        </div>
+
+        <div id="react-sound-root"></div>
+
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#awareness">Awareness</a>
+            <a href="#mapSection" onclick="openMapFromNav(event)">Map</a>
+        </div>
+
+    </nav>
+
+
+    <!-- ================= HOME ================= -->
+
+    <section class="hero hero-24" id="home">
+
+        <div class="radiation-glow-bg"></div>
+
+        <div class="hero-grid-lines"></div>
+
+        <div class="hero-content hero-copy">
+
+            <div class="small-title hero-badge">
+                <span class="pulse-dot"></span>
+                ☢ RADIATION AWARENESS & ANALYSIS
+            </div>
+
+            <h1>
+                Understand Radiation.
+                <span>Stay Safe.</span>
+            </h1>
+
+            <p class="hero-description">
+                Explore radiation awareness, state-level analysis,
+                safety information and an interactive India map —
+                all in one place.
+            </p>
+
+            <div class="hero-actions">
+
+                <div class="state-box hero-state-box">
+
+                    <div class="select-icon">🇮🇳</div>
+
+                    <select id="stateSelect" aria-label="Select your state">
+
+                        <option value="">
+                            Select your state
+                        </option>
+
+
+                    <optgroup label="States & Union Territories">
+                        <option>Andhra Pradesh</option>
+                        <option>Arunachal Pradesh</option>
+                        <option>Assam</option>
+                        <option>Bihar</option>
+                        <option>Chhattisgarh</option>
+                        <option>Goa</option>
+                        <option>Gujarat</option>
+                        <option>Haryana</option>
+                        <option>Himachal Pradesh</option>
+                        <option>Jharkhand</option>
+                        <option>Karnataka</option>
+                        <option>Kerala</option>
+                        <option>Madhya Pradesh</option>
+                        <option>Maharashtra</option>
+                        <option>Manipur</option>
+                        <option>Meghalaya</option>
+                        <option>Mizoram</option>
+                        <option>Nagaland</option>
+                        <option>Odisha</option>
+                        <option>Punjab</option>
+                        <option>Rajasthan</option>
+                        <option>Sikkim</option>
+                        <option>Tamil Nadu</option>
+                        <option>Telangana</option>
+                        <option>Tripura</option>
+                        <option>Uttar Pradesh</option>
+                        <option>Uttarakhand</option>
+                        <option>West Bengal</option>
+
+                        <option>Andaman and Nicobar Islands</option>
+                        <option>Chandigarh</option>
+                        <option>Dadra and Nagar Haveli and Daman and Diu</option>
+                        <option>Delhi</option>
+                        <option>Jammu and Kashmir</option>
+                        <option>Ladakh</option>
+                        <option>Lakshadweep</option>
+                        <option>Puducherry</option>
+
+                    </optgroup>
+                    </select>
+
+                    <button class="hero-analysis-button" onclick="openAnalysis()">
+                        Analysis
+                        <span>→</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="hero-mini-stats">
+
+                <div>
+                    <strong>36</strong>
+                    <span>Regions</span>
+                </div>
+
+                <div>
+                    <strong>360°</strong>
+                    <span>Awareness</span>
+                </div>
+
+                <div>
+                    <strong>24/7</strong>
+                    <span>Learn & Explore</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+
+            <div class="orbital-ring ring-one"></div>
+            <div class="orbital-ring ring-two"></div>
+            <div class="orbital-ring ring-three"></div>
+
+            <div class="radiation-orb">
+
+                <div class="orb-grid"></div>
+
+                <div class="orb-core">
+                    <span>☢</span>
+                </div>
+
+                <div class="orb-label">
+                    <small>RADISAFE</small>
+                    <strong>360</strong>
+                </div>
+
+            </div>
+
+            <div class="floating-card card-one">
+                <span>☢</span>
+                <div>
+                    <small>Radiation</small>
+                    <strong>Awareness</strong>
+                </div>
+            </div>
+
+            <div class="floating-card card-two">
+                <span>🇮🇳</span>
+                <div>
+                    <small>India</small>
+                    <strong>State Analysis</strong>
+                </div>
+            </div>
+
+            <div class="floating-card card-three">
+                <span>🛡️</span>
+                <div>
+                    <small>Safety</small>
+                    <strong>Precautions</strong>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="hero-scroll-hint">
+            <span></span>
+            Explore Radisafe 360
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         ANALYSIS POPUP
+         ================================================= -->
+
+    <div id="analysisModal" class="modal">
+
+        <div class="modal-content">
+
+            <button
+                class="close"
+                onclick="closeAnalysis()">
+                ×
+            </button>
+
+
+            <h2 id="modalTitle">
+                State Analysis
+            </h2>
+
+            <span id="status" class="status">
+                Moderate
+            </span>
+
+
+            <p id="summary" class="summary">
+                Radiation overview for the selected state.
+            </p>
+
+
+            <!-- ================= METRICS ================= -->
+
+            <div class="metrics">
+
+                <div class="metric">
+                    <h3 id="score">60</h3>
+                    <p>Radiation Index</p>
+                </div>
+
+                <div class="metric">
+                    <h3 id="reading">Moderate</h3>
+                    <p>Current Level</p>
+                </div>
+
+                <div class="metric">
+                    <h3>6</h3>
+                    <p>Data Points</p>
+                </div>
+
+            </div>
+
+
+            <!-- ================= CHARTS ================= -->
+
+            <div class="charts">
+
+                <!-- PIE -->
+
+                <div class="chart-card">
+
+                    <h3>
+                        Radiation Distribution
+                    </h3>
+
+                    <div class="pie-chart">
+
+                        <div class="pie-text">
+                            Risk
+                        </div>
+
+                    </div>
+
+                    <div class="legend">
+
+                        <span>
+                            <i class="less-dot"></i>
+                            Less 55%
+                        </span>
+
+                        <span>
+                            <i class="moderate-dot"></i>
+                            Moderate 27%
+                        </span>
+
+                        <span>
+                            <i class="high-dot"></i>
+                            High 18%
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BAR -->
+
+                <div class="chart-card">
+
+                    <h3>
+                        Analysis by Zone
+                    </h3>
+
+                    <div class="bars">
+
+                        <div class="bar-container">
+
+                            <div
+                                class="bar"
+                                style="height:45%">
+                            </div>
+
+                            <span>Zone 1</span>
+
+                        </div>
+
+
+                        <div class="bar-container">
+
+                            <div
+                                class="bar"
+                                style="height:65%">
+                            </div>
+
+                            <span>Zone 2</span>
+
+                        </div>
+
+
+                        <div class="bar-container">
+
+                            <div
+                                class="bar"
+                                style="height:55%">
+                            </div>
+
+                            <span>Zone 3</span>
+
+                        </div>
+
+
+                        <div class="bar-container">
+
+                            <div
+                                class="bar"
+                                style="height:82%">
+                            </div>
+
+                            <span>Zone 4</span>
+
+                        </div>
+
+
+                        <div class="bar-container">
+
+                            <div
+                                class="bar"
+                                style="height:60%">
+                            </div>
+
+                            <span>Zone 5</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= RADIATION INFO ================= -->
+
+            <div class="info-card">
+
+                <h3>
+                    ☢️ Radiation Information
+                </h3>
+
+                <p id="meaning">
+                    Radiation information for the selected
+                    state will appear here.
+                </p>
+
+            </div>
+
+
+            <!-- ================= ENHANCED AWARENESS ================= -->
+
+            <div
+                class="info-card awareness-center"
+                id="awareness">
+
+                <div class="awareness-title-row">
+                    <div>
+                        <h3>🧠 Radiation Awareness Center</h3>
+                        <p class="awareness-intro">
+                            Understand radiation, where it comes from, when exposure can be safe,
+                            possible effects, and practical ways to reduce unnecessary exposure.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="awareness-tabs" role="tablist" aria-label="Radiation awareness topics">
+                    <button class="awareness-tab active" type="button" data-awareness-tab="overview">Overview</button>
+                    <button class="awareness-tab" type="button" data-awareness-tab="types">Types</button>
+                    <button class="awareness-tab" type="button" data-awareness-tab="safety">Is It Safe?</button>
+                    <button class="awareness-tab" type="button" data-awareness-tab="sources">Sources</button>
+                    <button class="awareness-tab" type="button" data-awareness-tab="effects">Effects</button>
+                </div>
+
+                <div class="awareness-panel active" data-awareness-panel="overview">
+                    <div class="awareness-grid awareness-overview-grid">
+                        <div>
+                            <h4>☢️ What is Radiation?</h4>
+                            <p>
+                                Radiation is energy that travels as waves or particles. It is part of
+                                everyday life and can be natural or produced by people.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h4>⚖️ Risk depends on exposure</h4>
+                            <p>
+                                For ionizing radiation, risk depends on factors such as radiation type,
+                                dose, dose rate, and how long or how often exposure occurs.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h4>📊 Read charts carefully</h4>
+                            <p>
+                                A chart is meaningful only when its unit, measurement period and data
+                                source are known. Demo visuals should not be treated as real measurements.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="awareness-chart-grid">
+                        <div class="awareness-chart-card">
+                            <h4>Radiation by Energy Type</h4>
+                            <div class="type-meter">
+                                <span>Non-ionizing</span>
+                                <div class="meter-track"><div class="meter-fill meter-medium"></div></div>
+                                <span>Ionizing</span>
+                                <div class="meter-track"><div class="meter-fill meter-high"></div></div>
+                            </div>
+                            <p class="chart-note">
+                                This is a conceptual comparison, not a measurement of radiation level.
+                            </p>
+                        </div>
+
+                        <div class="awareness-chart-card">
+                            <h4>Exposure Risk Factors</h4>
+                            <div class="factor-list">
+                                <div><span>☑ Dose</span><b>Important</b></div>
+                                <div><span>☑ Duration</span><b>Important</b></div>
+                                <div><span>☑ Distance</span><b>Protective</b></div>
+                                <div><span>☑ Shielding</span><b>Protective</b></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="awareness-panel" data-awareness-panel="types">
+                    <div class="awareness-section-heading">
+                        <h4>🔬 Main Types of Radiation</h4>
+                        <p>
+                            Radiation can be grouped broadly into ionizing and non-ionizing radiation.
+                            The type determines how it interacts with matter.
+                        </p>
+                    </div>
+
+                    <div class="radiation-type-grid">
+                        <div class="radiation-type-card">
+                            <span class="type-icon">α</span>
+                            <h4>Alpha</h4>
+                            <p>Ionizing particles with low penetration but potentially significant internal exposure.</p>
+                            <span class="type-tag">Ionizing</span>
+                        </div>
+
+                        <div class="radiation-type-card">
+                            <span class="type-icon">β</span>
+                            <h4>Beta</h4>
+                            <p>Ionizing particles that can travel farther than alpha particles and may affect skin or internal tissues.</p>
+                            <span class="type-tag">Ionizing</span>
+                        </div>
+
+                        <div class="radiation-type-card">
+                            <span class="type-icon">γ</span>
+                            <h4>Gamma</h4>
+                            <p>High-energy electromagnetic radiation that can penetrate deeply through materials.</p>
+                            <span class="type-tag">Ionizing</span>
+                        </div>
+
+                        <div class="radiation-type-card">
+                            <span class="type-icon">X</span>
+                            <h4>X-rays</h4>
+                            <p>Ionizing electromagnetic radiation widely used for medical imaging and other applications.</p>
+                            <span class="type-tag">Ionizing</span>
+                        </div>
+
+                        <div class="radiation-type-card">
+                            <span class="type-icon">UV</span>
+                            <h4>Ultraviolet</h4>
+                            <p>Non-ionizing electromagnetic radiation from sunlight; excessive exposure can damage skin and eyes.</p>
+                            <span class="type-tag">Non-ionizing</span>
+                        </div>
+
+                        <div class="radiation-type-card">
+                            <span class="type-icon">RF</span>
+                            <h4>Radiofrequency</h4>
+                            <p>Non-ionizing electromagnetic radiation used in wireless communication and many electronic systems.</p>
+                            <span class="type-tag">Non-ionizing</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="awareness-panel" data-awareness-panel="safety">
+                    <div class="safety-banner">
+                        <div class="safety-icon">🛡️</div>
+                        <div>
+                            <h4>Is radiation safe?</h4>
+                            <p>
+                                Radiation is not automatically dangerous. Safety depends on the type,
+                                amount of exposure and circumstances. Many useful applications are
+                                performed under controlled conditions.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="safety-grid">
+                        <div>
+                            <h4>✅ Lower-risk situations</h4>
+                            <p>
+                                Everyday background radiation and properly controlled medical or workplace
+                                uses can be managed using established safety practices.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h4>⚠️ When concern increases</h4>
+                            <p>
+                                Higher or unnecessary exposure, particularly to ionizing radiation, can
+                                increase health risks. Avoid unnecessary exposure and follow safety guidance.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="three-principles">
+                        <div><strong>1</strong><span>Time<br><small>Reduce unnecessary exposure time</small></span></div>
+                        <div><strong>2</strong><span>Distance<br><small>Increase distance from sources</small></span></div>
+                        <div><strong>3</strong><span>Shielding<br><small>Use appropriate barriers</small></span></div>
+                    </div>
+                </div>
+
+                <div class="awareness-panel" data-awareness-panel="sources">
+                    <div class="awareness-section-heading">
+                        <h4>🌍 Where does radiation come from?</h4>
+                        <p>
+                            Radiation has both natural and human-made source. The source alone does not
+                            determine risk; exposure conditions matter.
+                            </p>
+                    </div>
+
+                    <div class="source-grid">
+                        <div class="source-card">
+                            <h4>🌎 Natural</h4>
+                            <p>Cosmic radiation and naturally occurring radioactive materials in soil, rocks, water and the air.</p>
+                        </div>
+
+                        <div class="source-card">
+                            <h4>🏥 Medical</h4>
+                            <p>X-rays, CT scans and some nuclear medicine procedures use radiation for diagnosis or treatment.</p>
+                        </div>
+
+                        <div class="source-card">
+                            <h4>🏭 Industrial</h4>
+                            <p>Some industries use radiation sources for inspection, measurement, research and other controlled applications.</p>
+                        </div>
+
+                        <div class="source-card">
+                            <h4>📱 Everyday technology</h4>
+                            <p>Wireless devices and communication systems use non-ionizing radiofrequency electromagnetic fields.</p>
+                        </div>
+                    </div>
+
+                    <div class="source-note">
+                        <strong>Important:</strong> The awareness categories above describe sources, not measured
+                        percentages of exposure for a particular state.
+                    </div>
+                </div>
+
+                <div class="awareness-panel" data-awareness-panel="effects">
+                    <div class="awareness-grid effects-grid">
+                        <div>
+                            <h4>👨 Humans</h4>
+                            <p>
+                                High doses of ionizing radiation can cause tissue injury. Lower doses may
+                                increase long-term health risk, depending on exposure.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h4>🐾 Animals</h4>
+                            <p>
+                                Significant radiation exposure can affect biological processes, development
+                                and reproduction in animals.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h4>🌱 Plants</h4>
+                            <p>
+                                High radiation exposure can affect plant growth and cellular or biological
+                                processes.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="effect-warning">
+                        <h4>📌 Remember</h4>
+                        <p>
+                            Effects cannot be judged from a radiation label alone. The radiation type,
+                            dose and exposure conditions must be considered.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- ================= PRECAUTIONS ================= -->
+
+            <div class="info-card">
+
+                <h3>
+                    🛡️ Precautions to Stay Safe
+                </h3>
+
+                <div class="precautions">
+
+                    <div>
+                        <h4>
+                            ⏱️ Reduce Exposure Time
+                        </h4>
+
+                        <p>
+                            Minimize unnecessary time near
+                            radiation sources.
+                        </p>
+                    </div>
+
+
+                    <div>
+                        <h4>
+                            📏 Increase Distance
+                        </h4>
+
+                        <p>
+                            Maintain a safe distance from
+                            radiation sources.
+                        </p>
+                    </div>
+
+
+                    <div>
+                        <h4>
+                            🛡️ Use Shielding
+                        </h4>
+
+                        <p>
+                            Use appropriate shielding and
+                            protective equipment when required.
+                        </p>
+                    </div>
+
+
+                    <div>
+                        <h4>
+                            📋 Follow Safety Rules
+                        </h4>
+
+                        <p>
+                            Always follow official radiation
+                            safety instructions.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= SEE MAP ================= -->
+
+            <div class="see-map-area">
+
+                <button
+                    class="see-map-button"
+                    onclick="showMap()">
+
+                    📌 See Map
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         MAP SECTION
+         ================================================= -->
+
+    <section id="mapSection" class="map-section">
+
+        <div class="map-heading">
+
+            <div class="map-icon">
+                🇮🇳
+            </div>
+
+            <h2>
+                India Radiation Map
+            </h2>
+
+            <p id="selectedMapState">
+                Selected state will appear here
+            </p>
+
+        </div>
+
+
+        <div class="map-card">
+
+            <!-- REAL MAP -->
+
+            <div id="indiaMap"></div>
+
+
+            <!-- SELECTED STATE INFORMATION -->
+
+            <div class="map-info">
+
+                <div class="pin">
+                    📌
+                </div>
+
+                <div>
+
+                    <strong id="mapStateName">
+                        State
+                    </strong>
+
+                    <p>
+                        Radiation Level:
+                        <span id="mapStateLevel">
+                            —
+                        </span>
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- LEGEND -->
+
+            <div class="map-legend">
+
+                <span>
+                    <i class="neutral"></i>
+                    Other States
+                </span>
+
+                <span>
+                    <i class="green"></i>
+                    Less
+                </span>
+
+                <span>
+                    <i class="orange"></i>
+                    Moderate
+                </span>
+
+                <span>
+                    <i class="red"></i>
+                    High
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= FORECAST ================= -->
+
+        <div class="future-prediction-link-area">
+
+            <button
+                class="future-prediction-button"
+                onclick="openFuturePrediction()">
+
+                🔮 Forecast
+                <span>→</span>
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <h3>
+            ☢️ Radisafe 360
+        </h3>
+
+        <p>
+            Radiation Awareness & Safety Platform
+        </p>
+
+    </footer>
+
+
+    <!-- Leaflet JavaScript -->
+
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
+
+
+    <!-- React click sound controller -->
+    <script>
+        (function () {
+            const root = document.getElementById("react-sound-root");
+
+            function ClickSoundController() {
+                const [enabled, setEnabled] = React.useState(true);
+
+                React.useEffect(function () {
+                    let audioContext = null;
+
+                    function playClick() {
+                        if (!enabled) return;
+
+                        try {
+                            audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+
+                            if (audioContext.state === "suspended") {
+                                audioContext.resume();
+                            }
+
+                            const oscillator = audioContext.createOscillator();
+                            const gain = audioContext.createGain();
+
+                            oscillator.type = "sine";
+                            oscillator.frequency.setValueAtTime(620, audioContext.currentTime);
+                            oscillator.frequency.exponentialRampToValueAtTime(300, audioContext.currentTime + 0.08);
+
+                            gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
+                            gain.gain.exponentialRampToValueAtTime(0.14, audioContext.currentTime + 0.01);
+                            gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.09);
+
+                            oscillator.connect(gain);
+                            gain.connect(audioContext.destination);
+
+                            oscillator.start();
+                            oscillator.stop(audioContext.currentTime + 0.1);
+                        } catch (error) {
+                            console.log("Click sound unavailable:", error);
+                        }
+                    }
+
+                    function handleClick(event) {
+                        const target = event.target.closest("button, .nav-links a");
+                        if (!target || target.classList.contains("react-sound-toggle")) return;
+                        playClick();
+                    }
+
+                    document.addEventListener("click", handleClick, true);
+                    return function () {
+                        document.removeEventListener("click", handleClick, true);
+                    };
+                }, [enabled]);
+
+                return React.createElement(
+                    "button",
+                    {
+                        className: "react-sound-toggle",
+                        title: enabled ? "Click sound on" : "Click sound off",
+                        onClick: function () { setEnabled(!enabled); }
+                    },
+                    enabled ? "🔊" : "🔇"
+                );
+            }
+
+            if (root && window.React && window.ReactDOM) {
+                ReactDOM.createRoot(root).render(
+                    React.createElement(ClickSoundController)
+                );
+            }
+        })();
+    </script>
+
+    <!-- Your JavaScript -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
